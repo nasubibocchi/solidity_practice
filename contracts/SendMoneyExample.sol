@@ -1,6 +1,11 @@
 pragma solidity ^0.5.13;
 
 contract SendMoneyExample {
+    address owner;
+
+    constructor() public {
+        owner = msg.sender;
+    }
 
     uint public balanceReceived;
 
@@ -18,6 +23,7 @@ contract SendMoneyExample {
     }
 
     function withdrawMoneyTo(address payable _to) public {
+        require(msg.sender == owner, "You are not the owner");
         _to.transfer(this.getBalance());
     }
 }
