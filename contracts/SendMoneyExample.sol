@@ -7,6 +7,13 @@ contract SendMoneyExample {
         owner = msg.sender;
     }
 
+    bool isPaused; // it is false if not initialized
+
+    function setIsPaused(bool _isPaused) public {
+        require(msg.sender == owner, "You are not the owner");
+        isPaused = _isPaused;
+    }
+
     uint public balanceReceived;
 
     function receiveMoney() public payable {
@@ -24,6 +31,7 @@ contract SendMoneyExample {
 
     function withdrawMoneyTo(address payable _to) public {
         require(msg.sender == owner, "You are not the owner");
+        require(!isPaused, "The Contract is paused");
         _to.transfer(this.getBalance());
     }
 }
