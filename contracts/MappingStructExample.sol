@@ -8,7 +8,7 @@ contract MappingStructExample {
 
     struct Balance {
         uint totalBalance;
-        uint numPayment; // number of times payment
+        uint numPayment; // number of payment times
         mapping (uint => Payment) payments; 
     }
 
