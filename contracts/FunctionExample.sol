@@ -3,7 +3,8 @@ pragma solidity ^0.8.3;
 contract ExceptionExample {
     mapping (address => uint) public balanceReceived;
 
-    address payable public owner;
+    // address payable public owner;
+    address payable owner;
 
     constructor() {
         owner = payable(msg.sender);
@@ -12,6 +13,10 @@ contract ExceptionExample {
     function destroySmartContract() public {
         require(msg.sender == owner, "You are not the owner");
         selfdestruct(owner);
+    }
+
+    function getOwner() public view returns (address) {
+        return owner;
     }
 
     function receiveMoney() public payable {
