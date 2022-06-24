@@ -19,6 +19,10 @@ contract ExceptionExample {
         return owner;
     }
 
+    function convertWeiToEth(uint _wei) public pure returns (uint) {
+        return _wei / 1 ether;
+    }
+
     function receiveMoney() public payable {
         // assert(msg.value == uint64(msg.value));
         // balanceReceived[msg.sender] += uint64(msg.value);
