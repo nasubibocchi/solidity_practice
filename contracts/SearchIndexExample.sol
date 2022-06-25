@@ -2,12 +2,10 @@ pragma solidity ^0.8.13;
 
 library Search {
     function indexOf(uint[] storage self, uint value) public view returns(uint) {
-        uint index;
+        uint index = self.length;
         for (uint i = 0; i < self.length; i++) {
             if (self[i] == value) {
                 index = i;
-            } else {
-                index = self.length;
             }
         }
         return index;
