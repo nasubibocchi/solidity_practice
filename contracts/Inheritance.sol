@@ -2,7 +2,18 @@
 
 pragma solidity ^0.8.10;
 
-import "./Owned.sol";
+contract Owned {
+    address owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "You are not allowed");
+        _;
+    }
+}
 
 contract InheritanceModifierExample is Owned {
 
