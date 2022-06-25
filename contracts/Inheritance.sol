@@ -2,26 +2,23 @@
 
 pragma solidity ^0.8.10;
 
-contract InheritanceModifierExample {
+import "./Owned.sol";
+
+contract InheritanceModifierExample is Owned {
 
     mapping(address => uint) public tokenBalance;
-
-    address owner;
 
     uint tokenPrice = 1 ether;
 
     constructor() {
-        owner = msg.sender;
         tokenBalance[owner] = 100;
     }
 
-    function createNewToken() public {
-        require(msg.sender == owner, "You are not allowed");
+    function createNewToken() public onlyOwner {
         tokenBalance[owner]++;
     }
 
-    function burnToken() public {
-        require(msg.sender == owner, "You are not allowed");
+    function burnToken() public onlyOwner {
         tokenBalance[owner]--;
     }
 
