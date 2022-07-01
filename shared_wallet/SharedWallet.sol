@@ -45,6 +45,11 @@ contract SharedWallet is Allowance {
         _to.transfer(_amount);
     }
 
+    // to be not able to renounce ownership by overriding this function
+    function renounceOwnership() public view onlyOwner override {
+        revert("You can not renounce ownership here");
+    }
+
     // work with v.0.8 
     fallback() external payable {
         // following process is not necessary because fallback() function play the role
