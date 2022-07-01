@@ -2,29 +2,11 @@ pragma solidity ^0.8.13;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-contract SharedWallet is Ownable {
-    // 'owner' is defined in Ownable 
-    // address payable owner;
-
-    // constructor() {
-    //     owner = payable(msg.sender);
-    // }
-
-    // modifier onlyOwner() {
-    //     require(msg.sender == owner, "You are not allowed");
-    //     _;
-    // }
-
+contract Allowance is Ownable {
     // create isOwner() because Ownable.sol does not define this function(?)
     function isOwner() public view returns(bool) {
         return msg.sender == owner();
     }
-
-    // mapping (address => uint) public totalBalance;
-
-    // function sendMoney() public payable {
-    //     totalBalance[msg.sender] += msg.value;
-    // }
 
     mapping(address => uint) public allowance;
 
@@ -41,10 +23,10 @@ contract SharedWallet is Ownable {
     function reduceAllowance(address _who, uint _amount) internal {
         allowance[_who] -= _amount;
     }
+}
 
+contract SharedWallet is Allowance {
     function withdrawMoney(address payable _to, uint _amount) public ownerOrAllowed(_amount) {
-        // require(totalBalance[msg.sender] >= _amount, "Not enough money");
-        // totalBalance[msg.sender] -= _amount;
         require(_amount <= address(this).balance, "There are not enough funds stored in the smart contract");
         if (!isOwner()) {
             reduceAllowance(msg.sender, _amount);
