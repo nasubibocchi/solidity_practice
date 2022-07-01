@@ -38,18 +38,26 @@ contract SharedWallet is Ownable {
         _;
     }
 
+    function reduceAllowance(address _who, uint _amount) internal {
+        allowance[_who] -= _amount;
+    }
+
     function withdrawMoney(address payable _to, uint _amount) public ownerOrAllowed(_amount) {
         // require(totalBalance[msg.sender] >= _amount, "Not enough money");
         // totalBalance[msg.sender] -= _amount;
+        require(_amount <= address(this).balance, "There are not enough funds stored in the smart contract");
+        if (!isOwner()) {
+            reduceAllowance(msg.sender, _amount);
+        }
         _to.transfer(_amount);
     }
 
-    // work with v.0.8.13 
+    // work with v.0.8 
     fallback() external payable {
         // following process is not necessary because fallback() function play the role
         // sendMoney();
     }
 
-    // work with v.0.5.13 
+    // work with v.0.5
     // function () external payable {}
 }
